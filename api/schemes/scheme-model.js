@@ -3,13 +3,7 @@ const db = require("../../data/db-config");
 async function find() {
   // EXERCISE A
 
-  const schemes = await db("schemes as sc").leftJoin("steps as st", "sc.scheme_id", "st.scheme_id").groupBy("sc.scheme_id").orderBy("sc.scheme_id");
-  console.log("inside the find model, here's the schemes:", schemes);
-
-  const { scheme_id, scheme_name, number_of_steps } = schemes;
-  const formattedSchemes = schemes.reduce((acc, { scheme_id, scheme_name, number_of_steps }) => {}, []);
-  console.log("this is formatted schemes:", formattedSchemes);
-  return formattedSchemes;
+  return db("schemes as sc").leftJoin("steps as st", "sc.scheme_id", "st.scheme_id").select("sc.*").count("st.step_id as number_of_steps").groupBy("sc.scheme_id").orderBy("sc.scheme_id");
 }
 /*
     1A- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`.
